@@ -34,3 +34,6 @@ yarn-error.*
 
 # Jetbrains suite
 .idea
+
+# Variables d'environnements
+.env

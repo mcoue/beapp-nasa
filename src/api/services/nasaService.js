@@ -5,11 +5,11 @@ import axios from "axios";
 // The settings file contains the API key in the baseUrl for accessing the API.
 import {baseUrl} from "../settings";
 
-// Function to fetch today's picture data from the NASA API.
+// Function to fetch the picture of the day from the NASA API with optional parameters.
 export async function getTodayPicture(params) {
     try {
+        // Use axios to make a GET request to the baseUrl with the provided params.
         const response = await axios.get(baseUrl, {params});
-
         return response.data;
     } catch (error) {
         console.log('Error:', error);
@@ -17,10 +17,11 @@ export async function getTodayPicture(params) {
     }
 }
 
+// Function to fetch a list of pictures from the NASA API with optional parameters.
 export async function getLastPictures(params) {
     try {
+        // Use axios to make a GET request to the baseUrl with the provided params.
         const response = await axios.get(baseUrl, {params});
-
         return response.data;
     } catch (error) {
         console.log('Error:', error);

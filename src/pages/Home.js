@@ -1,11 +1,14 @@
 import {useEffect, useState} from "react";
 import {Card, Text} from "react-native-paper";
-import {StyleSheet, View} from "react-native";
+import {View} from "react-native";
 
+import {homeStyles} from "../styles";
 import * as nasaService from "../api/services/nasaService";
-import * as Styles from "../style";
 
 const Home = () => {
+    // Define the styles of the card
+    const styles = homeStyles();
+
     // State to store the fetched todayPicture data
     let [todayPicture, setTodayPicture] = useState({});
 
@@ -27,7 +30,7 @@ const Home = () => {
 
     // If todayPicture data is available, render the component
     return (
-        <View style={Styles.container()}>
+        <View style={styles.container}>
             <Card style={styles.card_container}>
                 <Card.Title title={todayPicture.date} titleStyle={styles.card_title}/>
                 <Card.Cover source={{ uri: todayPicture.url }} />
@@ -39,23 +42,5 @@ const Home = () => {
         </View>
     )
 };
-
-// Define the styles of the card
-const styles = StyleSheet.create({
-    card_container: {
-        margin: 20,
-    },
-    card_title: {
-        textAlign: "center"
-    },
-    card_content: {
-        marginTop: 10
-    },
-    card_content_description: {
-        textAlign: "justify",
-        marginTop: 10,
-        marginBottom: 10
-    }
-})
 
 export default Home;

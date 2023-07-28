@@ -1,16 +1,25 @@
-import {FlatList, Image, View, Text, ActivityIndicator, StyleSheet} from "react-native";
+import {FlatList, Image, View, Text, ActivityIndicator} from "react-native";
 import {useEffect, useState} from "react";
 
+import {todayListStyles} from "../styles";
 import * as nasaService from "../api/services/nasaService";
 import * as DateUtils from "../utils/DateUtils";
 
+
 const TodayList = () => {
+    // Define the styles of the list
+    const styles= todayListStyles();
+
+    // State to store the current date and the list of fetched pictures.
     let [currentDate, setCurrentDate] = useState(new Date());
     let [lastPictures, setLastPictures] = useState([]);
 
+    // useEffect to fetch pictures of the last month when the component mounts or when currentDate changes.
     useEffect(() => {
+        // Create a new Date object based on currentDate to avoid modifying the original date.
         const startDate = new Date(currentDate);
-        startDate.setDate(-1);
+        // Calculate the start date by subtracting one month from the current date.
+        startDate.setMonth(startDate.getMonth() -1);
 
         const params = {
             api_key: process.env.EXPO_PUBLIC_API_KEY,
@@ -26,6 +35,7 @@ const TodayList = () => {
         }).catch(err => console.log(err));
     }, [currentDate]);
 
+    // Function to render each item in the FlatList.
     const renderItem = ({ item }) => (
         <View style={styles.itemWrapperStyle}>
             <Image style={styles.itemImageStyle} source={{uri: item.url }} />
@@ -36,24 +46,25 @@ const TodayList = () => {
         </View>
     )
 
+    // Function to render the loading indicator at the end of the list.
     const renderLoader = () => (
         <View style={styles.loaderStyle}>
             <ActivityIndicator size="small" color="#aaa" />
         </View>
     );
 
+    // Function to load more pictures by updating the currentDate state to the last month.
     const loadMoreItem = () => {
-        const newDate = new Date(currentDate);
-        newDate.setMonth(newDate.getMonth() -1);
-        newDate.setDate(newDate.getDate() - 1);
-        setCurrentDate(newDate);
+        setCurrentDate(DateUtils.getLastMonth(currentDate));
     };
 
+    // If the lastPictures array is empty, show the loading indicator.
     if (lastPictures.length === 0) {
         return renderLoader();
     }
 
-    return(
+    // If lastPictures data is available, render the component with the fetched pictures in a FlatList.
+    return (
         <FlatList
             data={lastPictures}
             renderItem={renderItem}
@@ -64,35 +75,5 @@ const TodayList = () => {
         />
     )
 };
-
-const styles = StyleSheet.create({
-    itemWrapperStyle: {
-        flexDirection: "row",
-        paddingHorizontal: 16,
-        paddingVertical: 16,
-        borderBottomWidth: 1,
-        backgroundColor: "white",
-        borderColor: "#ddd",
-    },
-    itemImageStyle: {
-        width: 50,
-        height: 50,
-        marginRight: 16,
-    },
-    contentWrapperStyle: {
-        justifyContent: 'space-around',
-        maxWidth: 250
-    },
-    txtNameStyle: {
-        fontSize: 16
-    },
-    dateStyle: {
-        color: '#777'
-    },
-    loaderStyle: {
-        marginVertical: 16,
-        alignItems: "center"
-    }
-});
 
 export default TodayList;

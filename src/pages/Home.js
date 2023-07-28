@@ -5,31 +5,17 @@ import {StyleSheet, View} from "react-native";
 import * as nasaService from "../api/services/nasaService";
 import * as Styles from "../style";
 
-// Define the styles of the card
-const styles = StyleSheet.create({
-    card_container: {
-        margin: 20,
-    },
-    card_title: {
-        textAlign: "center"
-    },
-    card_content: {
-        marginTop: 10
-    },
-    card_content_description: {
-        textAlign: "justify",
-        marginTop: 10,
-        marginBottom: 10
-    }
-})
-
 const Home = () => {
     // State to store the fetched todayPicture data
     let [todayPicture, setTodayPicture] = useState({});
 
     // useEffect to fetch today's picture data when the component mounts
     useEffect(() => {
-        nasaService.getTodayPicture().then(data => {
+        const params = {
+            api_key: process.env.EXPO_PUBLIC_API_KEY
+        }
+
+        nasaService.getTodayPicture(params).then(data => {
             setTodayPicture(data);
         }).catch(err => console.log(err));
     }, []);
@@ -53,5 +39,23 @@ const Home = () => {
         </View>
     )
 };
+
+// Define the styles of the card
+const styles = StyleSheet.create({
+    card_container: {
+        margin: 20,
+    },
+    card_title: {
+        textAlign: "center"
+    },
+    card_content: {
+        marginTop: 10
+    },
+    card_content_description: {
+        textAlign: "justify",
+        marginTop: 10,
+        marginBottom: 10
+    }
+})
 
 export default Home;

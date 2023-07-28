@@ -6,15 +6,24 @@ import axios from "axios";
 import {baseUrl} from "../settings";
 
 // Function to fetch today's picture data from the NASA API.
-export async function getTodayPicture() {
-    let data = {}; // Create an empty object to store the fetched data.
+export async function getTodayPicture(params) {
+    try {
+        const response = await axios.get(baseUrl, {params});
 
-    // Use axios to make a GET request to the NASA API using the baseUrl.
-    // Await the response and store the data in the 'data' variable.
-    // If there's an error, log it to the console.
-    await axios.get(baseUrl).then(res => {
-        data = res.data;
-    }).catch(err => console.log(err));
+        return response.data;
+    } catch (error) {
+        console.log('Error:', error);
+        return {};
+    }
+}
 
-    return data;
+export async function getLastPictures(params) {
+    try {
+        const response = await axios.get(baseUrl, {params});
+
+        return response.data;
+    } catch (error) {
+        console.log('Error:', error);
+        return [];
+    }
 }

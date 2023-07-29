@@ -1,15 +1,13 @@
-import {FlatList, Image, View, Text, ActivityIndicator} from "react-native";
+import {FlatList, View, ActivityIndicator} from "react-native";
 import {useEffect, useState} from "react";
 
-import {todayListStyles} from "../styles";
+import {loaderStyle} from "../styles";
 import * as nasaService from "../api/services/nasaService";
 import * as DateUtils from "../utils/DateUtils";
+import PictureItem from "../components/PictureItem";
 
 
-const TodayList = () => {
-    // Define the styles of the list
-    const styles= todayListStyles();
-
+const TodayList = ({navigation}) => {
     // State to store the current date and the list of fetched pictures.
     let [currentDate, setCurrentDate] = useState(new Date());
     let [lastPictures, setLastPictures] = useState([]);
@@ -35,20 +33,9 @@ const TodayList = () => {
         }).catch(err => console.log(err));
     }, [currentDate]);
 
-    // Function to render each item in the FlatList.
-    const renderItem = ({ item }) => (
-        <View style={styles.itemWrapperStyle}>
-            <Image style={styles.itemImageStyle} source={{uri: item.url }} />
-            <View style={styles.contentWrapperStyle}>
-                <Text style={styles.txtNameStyle}>{item.title}</Text>
-                <Text style={styles.dateStyle}>{item.date}</Text>
-            </View>
-        </View>
-    )
-
     // Function to render the loading indicator at the end of the list.
     const renderLoader = () => (
-        <View style={styles.loaderStyle}>
+        <View style={loaderStyle()}>
             <ActivityIndicator size="small" color="#aaa" />
         </View>
     );
@@ -56,6 +43,10 @@ const TodayList = () => {
     // Function to load more pictures by updating the currentDate state to the last month.
     const loadMoreItem = () => {
         setCurrentDate(DateUtils.getLastMonth(currentDate));
+    };
+
+    const handleItemClicked = (pictureDate) => {
+        navigation.navigate('PictureDetails', {id: pictureDate});
     };
 
     // If the lastPictures array is empty, show the loading indicator.
@@ -67,7 +58,9 @@ const TodayList = () => {
     return (
         <FlatList
             data={lastPictures}
-            renderItem={renderItem}
+            renderItem={({item}) => (
+                <PictureItem item={item} onItemClicked={handleItemClicked} />
+            )}
             keyExtractor={item => item.date}
             ListFooterComponent={renderLoader}
             onEndReached={loadMoreItem}

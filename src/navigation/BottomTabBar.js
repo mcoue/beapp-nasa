@@ -1,14 +1,26 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Home from "../pages/Home";
 import TodayList from "../pages/TodayList";
+import PictureDetails from "../pages/PictureDetails";
 import TabBar from "./components/TabBar";
 
 const BottomTabBar = () => {
     // Create a bottom tab navigator instance
     const Tab = createBottomTabNavigator();
+
+    const TodayListStack = createNativeStackNavigator();
+    function TodayListStackScreen() {
+        return (
+            <TodayListStack.Navigator>
+                <TodayListStack.Screen name='Nasa pictures' component={TodayList} />
+                <TodayListStack.Screen name='PictureDetails' component={PictureDetails} />
+            </TodayListStack.Navigator>
+        );
+    }
 
     return (
         <NavigationContainer>
@@ -30,8 +42,8 @@ const BottomTabBar = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="TodayList"
-                    component={TodayList}
+                    name="TodayListStackScreen"
+                    component={TodayListStackScreen}
                     options={{
                         tabBarLabel: 'Today list',
                         tabBarIcon: ({color, size}) => {

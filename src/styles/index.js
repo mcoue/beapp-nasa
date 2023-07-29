@@ -50,9 +50,16 @@ export function todayListStyles() {
         dateStyle: {
             color: '#777',
         },
+    });
+}
+
+export function loaderStyle() {
+    const style = StyleSheet.create({
         loaderStyle: {
             marginVertical: 16,
             alignItems: "center",
         },
     });
+
+    return style.loaderStyle;
 }

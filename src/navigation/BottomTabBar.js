@@ -12,6 +12,7 @@ const BottomTabBar = () => {
     // Create a bottom tab navigator instance
     const Tab = createBottomTabNavigator();
 
+    // Create a stack navigator instance for TodayList and PictureDetails screens
     const TodayListStack = createNativeStackNavigator();
     function TodayListStackScreen() {
         return (

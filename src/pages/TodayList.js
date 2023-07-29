@@ -1,9 +1,9 @@
 import {FlatList, View, ActivityIndicator} from "react-native";
 import {useEffect, useState} from "react";
 
-import {loaderStyle} from "../styles";
 import * as nasaService from "../api/services/nasaService";
 import * as DateUtils from "../utils/DateUtils";
+import {loaderStyle} from "../styles";
 import PictureItem from "../components/PictureItem";
 
 
@@ -45,8 +45,9 @@ const TodayList = ({navigation}) => {
         setCurrentDate(DateUtils.getLastMonth(currentDate));
     };
 
+    // Function to handle item click and navigate to the PictureDetails screen with the selected picture's date.
     const handleItemClicked = (pictureDate) => {
-        navigation.navigate('PictureDetails', {id: pictureDate});
+        navigation.navigate('PictureDetails', {pictureDate: pictureDate});
     };
 
     // If the lastPictures array is empty, show the loading indicator.

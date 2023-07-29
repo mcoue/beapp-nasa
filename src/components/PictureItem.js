@@ -1,4 +1,5 @@
 import {Image, Text, TouchableOpacity, View} from "react-native";
+
 import {todayListStyles} from "../styles";
 
 const PictureItem = ({item, onItemClicked}) => {

@@ -28,3 +28,14 @@ export async function getLastPictures(params) {
         return [];
     }
 }
+
+// Function to fetch a picture from the NASA API by date with optional parameters.
+export async function getPictureByDate(params) {
+    try {
+        const response = await axios.get(baseUrl, {params});
+        return response.data;
+    } catch (error) {
+        console.log('Error:', error);
+        return {};
+    }
+}

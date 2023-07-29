@@ -1,14 +1,11 @@
 import {useEffect, useState} from "react";
-import {Card, Text} from "react-native-paper";
 import {View} from "react-native";
 
-import {homeStyles} from "../styles";
+import {container} from "../styles";
+import CardItem from "../components/CardItem";
 import * as nasaService from "../api/services/nasaService";
 
 const Home = () => {
-    // Define the styles of the card
-    const styles = homeStyles();
-
     // State to store the fetched todayPicture data
     let [todayPicture, setTodayPicture] = useState({});
 
@@ -30,15 +27,8 @@ const Home = () => {
 
     // If todayPicture data is available, render the component
     return (
-        <View style={styles.container}>
-            <Card style={styles.card_container}>
-                <Card.Title title={todayPicture.date} titleStyle={styles.card_title}/>
-                <Card.Cover source={{ uri: todayPicture.url }} />
-                <Card.Content style={styles.card_content}>
-                    <Text variant="titleMedium">{todayPicture.title}</Text>
-                    <Text variant="bodySmall" numberOfLines={10} style={styles.card_content_description}>{todayPicture.explanation}</Text>
-                </Card.Content>
-            </Card>
+        <View style={container()}>
+            <CardItem picture={todayPicture} />
         </View>
     )
 };

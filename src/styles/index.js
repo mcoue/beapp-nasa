@@ -1,13 +1,20 @@
 import {StyleSheet} from "react-native";
 
-export function homeStyles() {
-    return StyleSheet.create({
+export function container() {
+    const style =  StyleSheet.create({
         container: {
             flex: 1,
             backgroundColor: '#fff',
             alignItems: 'center',
             justifyContent: 'center',
         },
+    });
+
+    return style.container;
+}
+
+export function cardStyles() {
+    return StyleSheet.create({
         card_container: {
             margin: 20,
         },

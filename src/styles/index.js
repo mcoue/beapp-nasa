@@ -4,7 +4,7 @@ export function container() {
     const style =  StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: '#fff',
+            backgroundColor: 'white',
             alignItems: 'center',
             justifyContent: 'center',
         },
@@ -38,7 +38,7 @@ export function todayListStyles() {
             flexDirection: "row",
             paddingHorizontal: 16,
             paddingVertical: 16,
-            borderBottomWidth: 1,
+            borderTopWidth: 1,
             backgroundColor: "white",
             borderColor: "#ddd",
         },

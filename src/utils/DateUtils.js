@@ -1,6 +1,14 @@
 // Function to transform a Date object to a string in the format "YYYY-MM-DD".
 export function transformDate(date) {
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+    const year = date.getFullYear();
+    const day = date.getDate();
+
+    let month = date.getMonth() + 1;
+    if (month.toString().length < 2) {
+        month = `0${month}`;
+    }
+
+    return `${year}-${month}-${day}`;
 }
 
 // Function to get the date corresponding to the last month from the given date.

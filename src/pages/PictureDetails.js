@@ -1,6 +1,8 @@
-import {Text, TouchableOpacity, View} from "react-native";
+import {TouchableOpacity, View} from "react-native";
+import { Button } from 'react-native-paper';
 import {useEffect, useRef, useState} from "react";
 import {captureRef} from "react-native-view-shot";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as Sharing from "expo-sharing";
 
 import * as nasaService from "../api/services/nasaService";
@@ -51,7 +53,7 @@ const PictureDetails = ({route, navigation}) => {
         <View style={container()}>
             <CardItem picture={picture} ref={cardItemRef}/>
             <TouchableOpacity onPress={handleShare}>
-                <Text>Share Photo</Text>
+                <Button mode="contained"><Icon name="share" size={17}/> Share Photo</Button>
             </TouchableOpacity>
         </View>
     );

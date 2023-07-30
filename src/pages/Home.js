@@ -1,13 +1,16 @@
 import {useEffect, useState} from "react";
 import {View} from "react-native";
 
-import {container} from "../styles";
 import CardItem from "../components/CardItem";
 import * as nasaService from "../api/services/nasaService";
+import * as Styles from "../styles";
 
 const Home = () => {
     // State to store the fetched todayPicture data
     let [todayPicture, setTodayPicture] = useState({});
+
+    // Imported styles
+    const styles = Styles.container();
 
     // useEffect to fetch today's picture data when the component mounts
     useEffect(() => {
@@ -27,7 +30,7 @@ const Home = () => {
 
     // If todayPicture data is available, render the component
     return (
-        <View style={container()}>
+        <View style={[styles.container, styles.gravity_center]}>
             <CardItem picture={todayPicture} />
         </View>
     )

@@ -4,6 +4,7 @@ export function transformDate(date) {
     const day = date.getDate();
 
     let month = date.getMonth() + 1;
+    // Certain date format display either the 0 of the month or not
     if (month.toString().length < 2) {
         month = `0${month}`;
     }

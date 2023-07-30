@@ -46,7 +46,7 @@ const BottomTabBar = () => {
                     name="TodayListStackScreen"
                     component={TodayListStackScreen}
                     options={{
-                        tabBarLabel: 'Today list',
+                        tabBarLabel: 'Nasa pictures',
                         tabBarIcon: ({color, size}) => {
                             return <Icon name="view-list" size={size} color={color}/>;
                         },

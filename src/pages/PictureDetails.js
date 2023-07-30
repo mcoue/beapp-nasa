@@ -6,14 +6,18 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as Sharing from "expo-sharing";
 
 import * as nasaService from "../api/services/nasaService";
-import {container} from "../styles";
+import * as Styles from "../styles";
 import CardItem from "../components/CardItem";
 
 const PictureDetails = ({route, navigation}) => {
     // Extract the pictureDate from the route params
     const {pictureDate} = route.params;
+
     // Create a ref to capture the CardItem component
     const cardItemRef = useRef();
+
+    // Imported styles
+    const styles = Styles.container();
 
     // State to store the fetched picture data
     let [picture, setPicture] = useState({});
@@ -50,7 +54,7 @@ const PictureDetails = ({route, navigation}) => {
     }
 
     return (
-        <View style={container()}>
+        <View style={[styles.container, styles.gravity_center]}>
             <CardItem picture={picture} ref={cardItemRef}/>
             <TouchableOpacity onPress={handleShare}>
                 <Button mode="contained"><Icon name="share" size={17}/> Share Photo</Button>

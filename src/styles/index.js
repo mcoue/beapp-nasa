@@ -1,16 +1,16 @@
 import {StyleSheet} from "react-native";
 
 export function container() {
-    const style =  StyleSheet.create({
+    return StyleSheet.create({
         container: {
             flex: 1,
             backgroundColor: 'white',
-            alignItems: 'center',
-            justifyContent: 'center',
         },
+        gravity_center: {
+            alignItems: 'center',
+            justifyContent: 'center'
+        }
     });
-
-    return style.container;
 }
 
 export function cardStyles() {
@@ -69,4 +69,17 @@ export function loaderStyle() {
     });
 
     return style.loaderStyle;
+}
+
+export function datePickerStyle() {
+    const style = StyleSheet.create({
+        datePickerStyle: {
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginVertical: 20,
+        },
+    });
+
+    return style.datePickerStyle;
 }

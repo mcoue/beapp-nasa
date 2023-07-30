@@ -1,23 +1,23 @@
-import {FlatList, View, ActivityIndicator, StyleSheet} from "react-native";
-import {Button} from "react-native-paper";
+import {FlatList, View, ActivityIndicator} from "react-native";
 import {useEffect, useState} from "react";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import DateTimePicker from "@react-native-community/datetimepicker"
 
 import * as nasaService from "../api/services/nasaService";
 import * as DateUtils from "../utils/DateUtils";
-import {loaderStyle} from "../styles";
+import * as Styles from "../styles";
 import PictureItem from "../components/PictureItem";
+import DatePicker from "../components/DatePicker";
 
 
 const TodayList = ({navigation}) => {
     // State to store the current date and the list of fetched pictures.
     let [currentDate, setCurrentDate] = useState(new Date());
     let [lastPictures, setLastPictures] = useState([]);
-    let [filteredPictures, setFilteredPictures] = useState([]);
+    // Picture fetch from the search
+    let [searchPicture, setSearchPicture] = useState(null);
 
-    let [datePicker, setDatePicker] = useState(new Date());
-    let [showPicker, setShowPicker] = useState(false);
+    // Imported styles
+    const loaderStyle = Styles.loaderStyle();
+    const containerStyle = Styles.container();
 
     // useEffect to fetch pictures of the last month when the component mounts or when currentDate changes.
     useEffect(() => {
@@ -42,9 +42,9 @@ const TodayList = ({navigation}) => {
 
     // Function to render the loading indicator at the end of the list.
     const renderLoader = () => {
-        if (filteredPictures.length === 0) {
+        if (!searchPicture) {
             return (
-                <View style={loaderStyle()}>
+                <View style={loaderStyle}>
                     <ActivityIndicator size="small" color="#aaa"/>
                 </View>
             );
@@ -55,7 +55,7 @@ const TodayList = ({navigation}) => {
 
     // Function to load more pictures by updating the currentDate state to the last month.
     const loadMoreItem = () => {
-        if (filteredPictures.length === 0) {
+        if (searchPicture) {
             setCurrentDate(DateUtils.getLastMonth(currentDate));
         }
     };
@@ -65,6 +65,7 @@ const TodayList = ({navigation}) => {
         navigation.navigate('PictureDetails', {pictureDate: pictureDate});
     };
 
+    // Function to handle the search for the picture based on the selected date.
     const handleSearchPicture = (date) => {
         const params = {
             api_key: process.env.EXPO_PUBLIC_API_KEY,
@@ -72,17 +73,14 @@ const TodayList = ({navigation}) => {
         }
 
         nasaService.getPictureByDate(params).then(data => {
-            setFilteredPictures([data]);
+            setSearchPicture(data);
         });
-    }
-
-    const onChangeDatePicker = ({ type }, selectedDate) => {
-        if (type === "set") {
-            setDatePicker(selectedDate);
-            handleSearchPicture(selectedDate);
-        }
-        setShowPicker(false);
     };
+
+    // Function to handle clearing the search and reset to the original list of pictures.
+    const handleCleanSearch = () => {
+        setSearchPicture(null);
+    }
 
     // If the lastPictures array is empty, show the loading indicator.
     if (lastPictures.length === 0) {
@@ -91,31 +89,14 @@ const TodayList = ({navigation}) => {
 
     // If lastPictures data is available, render the component with the fetched pictures in a FlatList.
     return (
-        <View style={styles.wrapperBgColor}>
-            <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center", marginVertical: 20 }}>
-                <Button
-                    mode="contained"
-                    style={{marginEnd: 5}}
-                    onPress={() => setShowPicker(true)}
-                >Search picture</Button>
-                <Button
-                    mode="contained"
-                    disabled={filteredPictures.length === 0}
-                    style={{marginStart: 5}}
-                    onPress={() => setFilteredPictures([])}
-                ><Icon name="trash-can" size={17}/></Button>
-            </View>
-            {showPicker && (
-                <DateTimePicker
-                    mode="date"
-                    display="spinner"
-                    value={datePicker}
-                    onChange={onChangeDatePicker}
-                    maximumDate={new Date()}
-                />
-            )}
+        <View style={containerStyle.container}>
+            <DatePicker
+                handleSearchPicture={handleSearchPicture}
+                handleCleanSearch={handleCleanSearch}
+                searchPicture={searchPicture}
+            />
             <FlatList
-                data={filteredPictures.length > 0 ? filteredPictures : lastPictures}
+                data={searchPicture ? [searchPicture] : lastPictures}
                 renderItem={({item}) => (
                     <PictureItem item={item} onItemClicked={handleItemClicked} />
                 )}
@@ -127,16 +108,5 @@ const TodayList = ({navigation}) => {
         </View>
     )
 };
-
-const styles = StyleSheet.create({
-    wrapperBgColor: {
-        backgroundColor: 'white',
-        flex: 1,
-    },
-    searchButtonStyle: {
-        marginVertical: 40,
-        marginHorizontal: 20,
-    },
-});
 
 export default TodayList;

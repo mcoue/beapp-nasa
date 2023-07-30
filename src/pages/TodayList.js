@@ -55,7 +55,7 @@ const TodayList = ({navigation}) => {
 
     // Function to load more pictures by updating the currentDate state to the last month.
     const loadMoreItem = () => {
-        if (searchPicture) {
+        if (!searchPicture) {
             setCurrentDate(DateUtils.getLastMonth(currentDate));
         }
     };
